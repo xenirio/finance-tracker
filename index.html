@@ -385,7 +385,7 @@ CATEGORIES.forEach(c => CAT_MAP[c.key] = c);
 
 // ── State ──────────────────────────────
 let allRows        = [];
-let viewMode       = 'monthly';
+let viewMode       = 'daily';
 const now          = new Date();
 let viewYear       = now.getFullYear();
 let viewMonth      = now.getMonth();
@@ -710,7 +710,7 @@ function openTrend(key) {
 
 function drillMonth(month) {
   viewMonth=month; viewMode='monthly'; selectedDay=null; activeTrendCat=null;
-  setActiveTab('monthly'); renderAll();
+  setActiveTab('daily'); renderAll();
 }
 
 // ── Transactions ───────────────────────
