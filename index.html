@@ -20,8 +20,6 @@
     --text:      #eef0f6;
     --muted:     #6b7280;
     --accent:    #f0b429;
-
-    /* Category palette */
     --c-food:    #f97316;
     --c-transport: #3b82f6;
     --c-bills:   #8b5cf6;
@@ -32,15 +30,12 @@
     --c-ent:     #ef4444;
     --c-travel:  #14b8a6;
     --c-other:   #6b7280;
-
     --radius:    14px;
     --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { background: var(--bg); }
-
   body {
     font-family: 'JetBrains Mono', monospace;
     background: var(--bg);
@@ -55,68 +50,88 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(13,15,20,0.85);
+    background: rgba(13,15,20,0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    padding: 14px 20px 10px;
+    padding: 12px 16px 0;
+  }
+  .header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 10px;
   }
-
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
   .logo span { color: var(--accent); }
-
-  .month-nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .month-nav button {
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .nav-wrap { display: flex; align-items: center; gap: 8px; }
+  .nav-wrap button {
     background: var(--surface2);
     border: 1px solid var(--border);
     color: var(--text);
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    font-size: 14px;
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    font-size: 13px;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s;
   }
-  .month-nav button:hover { background: var(--surface); }
-  #monthLabel {
+  .nav-wrap button:hover { background: var(--surface); }
+  #periodLabel {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 13px;
-    min-width: 90px;
+    font-size: 12px;
+    min-width: 80px;
     text-align: center;
     letter-spacing: 0.5px;
     color: var(--accent);
   }
-
   .refresh-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 18px;
-    cursor: pointer;
-    padding: 4px;
+    background: none; border: none; color: var(--muted);
+    font-size: 18px; cursor: pointer; padding: 4px;
     transition: color 0.15s, transform 0.3s;
   }
   .refresh-btn:hover { color: var(--text); }
   .refresh-btn.spinning { animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── Main layout ── */
+  /* ── View tabs ── */
+  .view-tabs {
+    display: flex;
+    gap: 2px;
+    margin: 0 -16px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .view-tab {
+    flex: 1;
+    background: none; border: none;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 8px 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.15s;
+  }
+  .view-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 99px;
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+  .view-tab.active { color: var(--accent); }
+  .view-tab.active::after { transform: scaleX(1); }
+
+  /* ── Main ── */
   main {
-    padding: 16px 16px 0;
+    padding: 14px 16px 0;
     max-width: 480px;
     margin: 0 auto;
     display: flex;
@@ -130,31 +145,22 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 18px;
-    animation: fadeUp 0.4s ease both;
+    animation: fadeUp 0.35s ease both;
   }
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .card:nth-child(1) { animation-delay: 0.05s; }
-  .card:nth-child(2) { animation-delay: 0.1s; }
-  .card:nth-child(3) { animation-delay: 0.15s; }
-  .card:nth-child(4) { animation-delay: 0.2s; }
-
   .card-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
   }
 
-  /* ── Total spend card ── */
+  /* ── Total card ── */
   .total-card {
     background: linear-gradient(135deg, #1a1d2a 0%, #141720 100%);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .total-card::before {
     content: '';
@@ -166,331 +172,202 @@
   }
   .total-amount {
     font-family: 'Syne', sans-serif;
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: -1.5px;
-    line-height: 1;
-    color: var(--text);
+    font-size: 38px; font-weight: 800;
+    letter-spacing: -1.5px; line-height: 1;
   }
   .total-amount .currency {
-    font-size: 20px;
-    color: var(--accent);
-    vertical-align: super;
-    margin-right: 2px;
-    font-weight: 700;
+    font-size: 20px; color: var(--accent);
+    vertical-align: super; margin-right: 2px; font-weight: 700;
   }
-  .total-meta {
-    display: flex;
-    gap: 16px;
-    margin-top: 12px;
-  }
+  .total-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
   .meta-item { display: flex; flex-direction: column; gap: 2px; }
-  .meta-val {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text);
-  }
+  .meta-val { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; color: var(--text); }
   .meta-key { font-size: 9px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
 
-  /* ── Category bar ── */
+  /* ── Daily bar chart ── */
+  .daily-chart {
+    display: flex; align-items: flex-end; gap: 3px;
+    height: 60px; margin: 14px 0 6px;
+  }
+  .daily-bar-col {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    height: 100%; justify-content: flex-end; cursor: pointer;
+  }
+  .daily-bar-fill {
+    width: 100%; border-radius: 3px 3px 0 0;
+    transition: height 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    min-height: 2px; background: var(--accent); opacity: 0.4;
+  }
+  .daily-bar-fill.today  { opacity: 0.8; }
+  .daily-bar-fill.active { opacity: 1; box-shadow: 0 0 6px rgba(240,180,41,0.4); }
+  .daily-bar-lbl { font-size: 7px; color: var(--muted); }
+  .daily-sel-info {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0 2px; border-top: 1px solid var(--border); margin-top: 4px;
+  }
+  .daily-sel-date { font-size: 10px; color: var(--muted); }
+  .daily-sel-amt { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--accent); }
+
+  /* ── Category ── */
   .cat-bar {
-    height: 10px;
-    border-radius: 99px;
-    display: flex;
-    overflow: hidden;
-    gap: 2px;
-    margin-top: 14px;
-    margin-bottom: 16px;
+    height: 10px; border-radius: 99px;
+    display: flex; overflow: hidden; gap: 2px;
+    margin-top: 14px; margin-bottom: 16px;
   }
-  .cat-bar-seg {
-    height: 100%;
-    border-radius: 99px;
-    transition: flex 0.5s cubic-bezier(0.34,1.56,0.64,1);
-    cursor: pointer;
-  }
+  .cat-bar-seg { height: 100%; border-radius: 99px; transition: flex 0.5s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer; }
   .cat-bar-seg:hover { filter: brightness(1.25); }
-
   .cat-list { display: flex; flex-direction: column; gap: 10px; }
-
-  .cat-row {
-    display: grid;
-    grid-template-columns: 22px 1fr auto;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-  }
-  .cat-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    margin: auto;
-  }
+  .cat-row { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 10px; }
+  .cat-dot { width: 10px; height: 10px; border-radius: 50%; margin: auto; }
   .cat-name { font-size: 12px; color: var(--text); }
-  .cat-bar-track {
-    grid-column: 2;
-    height: 3px;
-    background: var(--surface2);
-    border-radius: 99px;
-    margin-top: 3px;
-    overflow: hidden;
-  }
-  .cat-bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .cat-amount {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    text-align: right;
-    white-space: nowrap;
-  }
-  .cat-pct {
-    font-size: 9px;
-    color: var(--muted);
-    text-align: right;
-  }
+  .cat-bar-track { grid-column: 2; height: 3px; background: var(--surface2); border-radius: 99px; margin-top: 3px; overflow: hidden; }
+  .cat-bar-fill { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+  .cat-amount { font-size: 12px; font-weight: 500; color: var(--text); text-align: right; white-space: nowrap; }
+  .cat-pct { font-size: 9px; color: var(--muted); text-align: right; }
+  .cat-col { display: flex; flex-direction: column; align-items: flex-end; }
 
-  .cat-col {
-    display: flex; flex-direction: column; align-items: flex-end;
-  }
-
-  /* ── Trend chart ── */
+  /* ── Trend tiles ── */
   .trend-wrap { overflow-x: auto; padding-bottom: 4px; }
   .trend-wrap::-webkit-scrollbar { height: 3px; }
-  .trend-wrap::-webkit-scrollbar-track { background: transparent; }
   .trend-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-
-  .trend-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 10px;
-    min-width: 100%;
-  }
-
+  .trend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; min-width: 100%; }
   .trend-tile {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    transition: border-color 0.15s;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px; cursor: pointer; transition: border-color 0.15s;
   }
   .trend-tile:hover { border-color: rgba(255,255,255,0.18); }
   .trend-tile.active { border-color: var(--accent); }
-
   .tile-name { font-size: 9px; letter-spacing: 0.8px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
-  .tile-amount {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  /* Mini sparkline */
+  .tile-amount { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 8px; }
   .sparkline { width: 100%; height: 30px; }
 
-  /* ── Expanded trend chart ── */
   #trendDetail {
-    display: none;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    animation: fadeUp 0.25s ease both;
+    display: none; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px; animation: fadeUp 0.25s ease both; margin-top: 10px;
   }
   #trendDetail.open { display: block; }
-  #trendDetailTitle {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 12px;
-  }
-
-  .bar-chart {
-    display: flex;
-    align-items: flex-end;
-    gap: 6px;
-    height: 80px;
-  }
-  .bar-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    height: 100%;
-    justify-content: flex-end;
-  }
-  .bar-fill {
-    width: 100%;
-    border-radius: 4px 4px 0 0;
-    transition: height 0.5s cubic-bezier(0.34,1.56,0.64,1);
-    min-height: 3px;
-  }
+  #trendDetailTitle { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 12px; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+  .bar-fill { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.5s cubic-bezier(0.34,1.56,0.64,1); min-height: 3px; }
   .bar-lbl { font-size: 8px; color: var(--muted); letter-spacing: 0.5px; }
+
+  /* ── Yearly month grid ── */
+  .year-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .year-cell {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 8px; cursor: pointer;
+    transition: border-color 0.15s; text-align: center;
+  }
+  .year-cell:hover { border-color: rgba(255,255,255,0.18); }
+  .year-cell.current { border-color: var(--accent); }
+  .year-cell-name { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 4px; }
+  .year-cell-amt { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; color: var(--text); }
+  .year-cell-bar { height: 3px; border-radius: 99px; background: var(--accent); margin-top: 5px; opacity: 0.6; }
 
   /* ── Transactions ── */
   .tx-list { display: flex; flex-direction: column; gap: 2px; }
-
   .tx-row {
-    display: grid;
-    grid-template-columns: 34px 1fr auto;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 34px 1fr auto;
+    align-items: center; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
     animation: fadeUp 0.3s ease both;
   }
   .tx-row:last-child { border-bottom: none; }
-
-  .tx-icon {
-    width: 34px; height: 34px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-    flex-shrink: 0;
-  }
+  .tx-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
   .tx-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .tx-merchant {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .tx-merchant { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tx-date { font-size: 10px; color: var(--muted); }
-  .tx-cat-tag {
-    font-size: 9px;
-    padding: 2px 6px;
-    border-radius: 99px;
-    opacity: 0.8;
-    color: #fff;
-    margin-top: 2px;
-    display: inline-block;
-    width: fit-content;
-  }
-  .tx-amount {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    text-align: right;
-    white-space: nowrap;
-  }
+  .tx-cat-tag { font-size: 9px; padding: 2px 6px; border-radius: 99px; color: #fff; margin-top: 2px; display: inline-block; }
+  .tx-amount { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; text-align: right; white-space: nowrap; }
 
-  /* ── Empty / loading states ── */
-  .state-box {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.8;
-  }
+  /* ── States ── */
+  .state-box { text-align: center; padding: 36px 20px; color: var(--muted); font-size: 12px; line-height: 1.8; }
   .state-box .icon { font-size: 32px; margin-bottom: 10px; }
-  .state-box a { color: var(--accent); text-decoration: none; }
-
-  /* ── Sheet config banner ── */
   #configBanner {
     background: linear-gradient(90deg, rgba(240,180,41,0.12), transparent);
     border: 1px solid rgba(240,180,41,0.3);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    font-size: 11px;
-    line-height: 1.7;
-    color: var(--text);
-    display: none;
+    border-radius: var(--radius); padding: 14px 16px;
+    font-size: 11px; line-height: 1.7; display: none;
   }
   #configBanner.show { display: block; }
-  #configBanner code {
-    background: rgba(240,180,41,0.15);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--accent);
-  }
+  #configBanner code { background: rgba(240,180,41,0.15); padding: 1px 6px; border-radius: 4px; color: var(--accent); }
 
-  /* ── Scrollbar global ── */
   ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">฿<span>xpense</span></div>
-  <div class="month-nav">
-    <button id="prevMonth">&#8592;</button>
-    <div id="monthLabel">— —</div>
-    <button id="nextMonth">&#8594;</button>
+  <div class="header-top">
+    <div class="logo">฿<span>xpense</span></div>
+    <div class="header-right">
+      <div class="nav-wrap">
+        <button id="prevBtn">&#8592;</button>
+        <div id="periodLabel">—</div>
+        <button id="nextBtn">&#8594;</button>
+      </div>
+      <button class="refresh-btn" id="refreshBtn" title="Refresh">↻</button>
+    </div>
   </div>
-  <button class="refresh-btn" id="refreshBtn" title="Refresh">↻</button>
+  <div class="view-tabs">
+    <button class="view-tab" data-view="daily">Daily</button>
+    <button class="view-tab" data-view="monthly">Monthly</button>
+    <button class="view-tab" data-view="yearly">Yearly</button>
+  </div>
 </header>
 
 <main>
-
-  <!-- Config banner (shown when Sheet not configured) -->
-  <div id="configBanner" class="card">
-    ⚙️ <strong>Setup needed:</strong> Open this file and set your Google Sheet ID in the <code>SHEET_ID</code> variable at the top of the script. <a href="https://github.com/xenirio/finance-tracker" target="_blank">See README →</a>
+  <div id="configBanner">
+    ⚙️ <strong>Setup needed:</strong> Set your Google Sheet ID in the <code>SHEET_ID</code> variable.
   </div>
 
-  <!-- Total spend -->
-  <div class="card total-card" style="animation-delay:0.05s">
-    <div class="card-label">Total Spent</div>
-    <div class="total-amount" id="totalAmount">
-      <span class="currency">฿</span><span id="totalValue">—</span>
-    </div>
-    <div class="total-meta">
-      <div class="meta-item">
-        <div class="meta-val" id="txCount">—</div>
-        <div class="meta-key">Transactions</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-val" id="dailyAvg">—</div>
-        <div class="meta-key">Daily avg</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-val" id="topCatName">—</div>
-        <div class="meta-key">Top category</div>
+  <!-- Total -->
+  <div class="card total-card">
+    <div class="card-label" id="totalLabel">Total Spent</div>
+    <div class="total-amount"><span class="currency">฿</span><span id="totalValue">—</span></div>
+    <div class="total-meta" id="totalMeta"></div>
+    <div id="dailyChartWrap" style="display:none">
+      <div class="daily-chart" id="dailyChart"></div>
+      <div class="daily-sel-info" id="dailySelInfo" style="display:none">
+        <div class="daily-sel-date" id="dailySelDate"></div>
+        <div class="daily-sel-amt" id="dailySelAmt"></div>
       </div>
     </div>
   </div>
 
-  <!-- Category breakdown -->
-  <div class="card" style="animation-delay:0.1s">
+  <!-- Category -->
+  <div class="card">
     <div class="card-label">By Category</div>
     <div class="cat-bar" id="catBar"></div>
     <div class="cat-list" id="catList"></div>
   </div>
 
-  <!-- Per-category trends -->
-  <div class="card" style="animation-delay:0.15s">
-    <div class="card-label">6-Month Trend</div>
+  <!-- Trend -->
+  <div class="card">
+    <div class="card-label" id="trendLabel">Trend</div>
     <div class="trend-wrap">
-      <div class="trend-grid" id="trendGrid"></div>
+      <div id="trendGrid"></div>
     </div>
     <div id="trendDetail"></div>
   </div>
 
-  <!-- Recent transactions -->
-  <div class="card" style="animation-delay:0.2s">
-    <div class="card-label">Recent Transactions</div>
+  <!-- Transactions -->
+  <div class="card">
+    <div class="card-label" id="txLabel">Transactions</div>
     <div class="tx-list" id="txList"></div>
   </div>
-
 </main>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  CONFIG — paste your Google Sheet ID here after setup
-// ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
 const SHEET_ID   = '1j3hHVKLk7H8VurItC7rta8FzxPR7ikApZoeLt8YgEkw';
-const SHEET_NAME = 'Transactions';   // tab name in your sheet
+const SHEET_NAME = 'Transactions';
 
-// ── Categories config ──────────────────────────────────────────
 const CATEGORIES = [
   { key: 'Food & Dining',      color: '#f97316', icon: '🍜' },
   { key: 'Transport',          color: '#3b82f6', icon: '🚕' },
@@ -503,332 +380,403 @@ const CATEGORIES = [
   { key: 'Travel',             color: '#14b8a6', icon: '✈️' },
   { key: 'Other',              color: '#6b7280', icon: '📦' },
 ];
-
 const CAT_MAP = {};
 CATEGORIES.forEach(c => CAT_MAP[c.key] = c);
 
-// ── State ──────────────────────────────────────────────────────
-let allRows   = [];
-let viewYear  = new Date().getFullYear();
-let viewMonth = new Date().getMonth(); // 0-indexed
+// ── State ──────────────────────────────
+let allRows        = [];
+let viewMode       = 'monthly';
+const now          = new Date();
+let viewYear       = now.getFullYear();
+let viewMonth      = now.getMonth();
+let selectedDay    = null;
+let activeTrendCat = null;
 
-// ── Helpers ───────────────────────────────────────────────────
-const fmt = n => '฿' + Math.round(n).toLocaleString('th-TH');
+// ── Helpers ────────────────────────────
+const fmt      = n => '฿' + Math.round(n).toLocaleString('th-TH');
 const fmtShort = n => n >= 1000 ? (n/1000).toFixed(1)+'k' : Math.round(n).toString();
+const dim      = (y,m) => new Date(y, m+1, 0).getDate();
 
-function monthLabel(y, m) {
-  return new Date(y, m, 1).toLocaleString('en', { month: 'short', year: '2-digit' });
+function getPeriodLabel() {
+  if (viewMode === 'yearly') return String(viewYear);
+  return new Date(viewYear, viewMonth, 1)
+    .toLocaleString('en', { month:'short', year:'2-digit' }).toUpperCase();
 }
 
-function getMonthRows(y, m) {
-  return allRows.filter(r => {
-    const d = new Date(r.date);
-    return d.getFullYear() === y && d.getMonth() === m;
-  });
+function getViewRows() {
+  if (viewMode === 'yearly')
+    return allRows.filter(r => r.date.getFullYear() === viewYear);
+  return allRows.filter(r =>
+    r.date.getFullYear() === viewYear && r.date.getMonth() === viewMonth);
 }
 
-function sumByCategory(rows) {
-  const totals = {};
-  rows.forEach(r => {
-    totals[r.category] = (totals[r.category] || 0) + r.amount;
-  });
-  return totals;
+function sumByCat(rows) {
+  const t = {};
+  rows.forEach(r => { t[r.category] = (t[r.category]||0) + r.amount; });
+  return t;
 }
 
-// ── Fetch data from Google Sheets ─────────────────────────────
+// ── Fetch ──────────────────────────────
 async function fetchData() {
   if (SHEET_ID === 'YOUR_SHEET_ID_HERE') {
     document.getElementById('configBanner').classList.add('show');
-    renderDemo();
-    return;
+    renderDemo(); return;
   }
-
-  const btn = document.getElementById('refreshBtn');
-  btn.classList.add('spinning');
-
+  document.getElementById('refreshBtn').classList.add('spinning');
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
-    const res  = await fetch(url);
-    const text = await res.text();
-    // Strip Google's wrapper: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+    const url  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const text = await (await fetch(url)).text();
     const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-    parseGVizTable(json.table);
-  } catch(e) {
-    console.error('Fetch error', e);
-    renderError();
-  } finally {
-    btn.classList.remove('spinning');
-  }
+    parseTable(json.table);
+  } catch(e) { renderError(); }
+  finally { document.getElementById('refreshBtn').classList.remove('spinning'); }
 }
 
-function parseGVizTable(table) {
-  // Expected columns: Date | Merchant | Amount | Category
-  // (col indices: 0=date, 1=merchant, 2=amount, 3=category)
+function parseTable(table) {
   allRows = [];
-  if (!table || !table.rows) return;
-
-  table.rows.forEach(row => {
+  (table?.rows || []).forEach(row => {
     try {
-      const dateCell = row.c[0];
-      const merchant = row.c[1]?.v ?? 'Unknown';
-      const amount   = parseFloat(row.c[2]?.v ?? 0);
-      const category = row.c[3]?.v ?? 'Other';
-
-      if (!dateCell?.v) return;
-
-      // GViz date format: "Date(2024,0,15)" → month is 0-indexed
+      const dc = row.c[0], merchant = row.c[1]?.v ?? 'Unknown';
+      const amount = parseFloat(row.c[2]?.v ?? 0), category = row.c[3]?.v ?? 'Other';
+      if (!dc?.v || isNaN(amount) || amount <= 0) return;
       let d;
-      if (typeof dateCell.v === 'string' && dateCell.v.startsWith('Date(')) {
-        const parts = dateCell.v.replace('Date(','').replace(')','').split(',');
-        d = new Date(+parts[0], +parts[1], +parts[2]);
-      } else {
-        d = new Date(dateCell.v);
-      }
-
-      if (isNaN(amount) || amount <= 0) return;
-
-      allRows.push({ date: d, merchant, amount, category });
-    } catch(e) { /* skip bad rows */ }
+      if (typeof dc.v === 'string' && dc.v.startsWith('Date(')) {
+        const p = dc.v.replace('Date(','').replace(')','').split(',');
+        d = new Date(+p[0],+p[1],+p[2]);
+      } else { d = new Date(dc.v); }
+      allRows.push({ date:d, merchant, amount, category });
+    } catch(e) {}
   });
-
   renderAll();
 }
 
-// ── Demo data (shown before Sheet is configured) ──────────────
+// ── Demo data ──────────────────────────
 function renderDemo() {
-  const now = new Date();
-  const rows = [];
   const merchants = {
-    'Food & Dining':     ['Cherng Doi','After You','Mango Tango','7-Eleven','Tops Supermarket'],
-    'Transport':         ['Grab','Bolt','BTS','Fuel Stop','Airport Link'],
-    'Bills & Utilities': ['AIS','True Move','MEA Electric','CAT Telecom','Airbnb'],
-    'Subscriptions':     ['Netflix','Spotify','iCloud','ChatGPT','Adobe'],
-    'Shopping':          ['Central','Lazada','Shopee','IKEA','Uniqlo'],
-    'Health & Pharmacy': ['Boots','Watsons','Bumrungrad','Bangkok Hospital','Pharma Choice'],
-    'Education':         ['Udemy','Coursera','Bookshop','Language School','MIT OCW'],
-    'Entertainment':     ['SF Cinema','Joox','MONO29','IMAX','Dave Escape'],
-    'Travel':            ['Agoda','Thai Airways','Airbnb','Klook','Hotels.com'],
-    'Other':             ['ATM','Transfer','Unknown','Misc','Refund'],
+    'Food & Dining':['Cherng Doi','After You','7-Eleven','Tops','Mango Tango'],
+    'Transport':['Grab','Bolt','BTS','Fuel Stop','Airport Link'],
+    'Bills & Utilities':['AIS','True Move','MEA','CAT','TOT'],
+    'Subscriptions':['Netflix','Spotify','iCloud','ChatGPT','Adobe'],
+    'Shopping':['Central','Lazada','Shopee','IKEA','Uniqlo'],
+    'Health & Pharmacy':['Boots','Watsons','Bumrungrad','BNH','Pharma'],
+    'Education':['Udemy','Coursera','Bookshop','Language','Skillshare'],
+    'Entertainment':['SF Cinema','Joox','IMAX','Dave Escape','Timezone'],
+    'Travel':['Agoda','Thai Airways','Airbnb','Klook','Hotels.com'],
+    'Other':['ATM','Transfer','Cash','Misc','Unknown'],
   };
-  // Generate 6 months of data
-  for (let mo = 5; mo >= 0; mo--) {
-    const yr = now.getFullYear(), month = now.getMonth() - mo;
-    const count = 15 + Math.floor(Math.random()*15);
+  allRows = [];
+  for (let mo = 11; mo >= 0; mo--) {
+    let y = now.getFullYear(), m = now.getMonth() - mo;
+    while (m < 0) { m += 12; y--; }
+    const days = dim(y,m), count = 15 + Math.floor(Math.random()*18);
     for (let i = 0; i < count; i++) {
-      const cats = CATEGORIES.map(c=>c.key);
-      const cat  = cats[Math.floor(Math.random()*cats.length)];
-      const mer  = merchants[cat][Math.floor(Math.random()*5)];
-      const day  = 1 + Math.floor(Math.random()*28);
-      const amt  = 50 + Math.floor(Math.random()*2450);
-      rows.push({ date: new Date(yr, month, day), merchant: mer, amount: amt, category: cat });
+      const cat = CATEGORIES[Math.floor(Math.random()*CATEGORIES.length)].key;
+      allRows.push({
+        date: new Date(y, m, 1+Math.floor(Math.random()*days)),
+        merchant: merchants[cat][Math.floor(Math.random()*5)],
+        amount: 50 + Math.floor(Math.random()*2450),
+        category: cat
+      });
     }
   }
-  allRows = rows;
   renderAll();
 }
 
-// ── Render all panels ─────────────────────────────────────────
+// ══════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════
 function renderAll() {
-  updateMonthLabel();
-  const rows = getMonthRows(viewYear, viewMonth);
-  renderSummary(rows);
-  renderCategoryBreakdown(rows);
-  renderTrends();
-  renderTransactions(rows);
+  document.getElementById('periodLabel').textContent = getPeriodLabel();
+  const rows = getViewRows();
+  const displayRows = (viewMode==='daily' && selectedDay!==null)
+    ? rows.filter(r => r.date.getDate()===selectedDay) : rows;
+
+  renderTotalCard(rows, displayRows);
+  renderCategoryBreakdown(displayRows);
+  renderTrendSection(rows);
+  renderTransactions(displayRows, rows.length);
 }
 
-function updateMonthLabel() {
-  document.getElementById('monthLabel').textContent = monthLabel(viewYear, viewMonth).toUpperCase();
-}
-
-// ── Summary card ──────────────────────────────────────────────
-function renderSummary(rows) {
-  const total = rows.reduce((s,r) => s+r.amount, 0);
+// ── Total card ─────────────────────────
+function renderTotalCard(rows, displayRows) {
+  const total = displayRows.reduce((s,r)=>s+r.amount, 0);
   document.getElementById('totalValue').textContent = total.toLocaleString('th-TH');
-  document.getElementById('txCount').textContent    = rows.length;
 
-  const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
-  document.getElementById('dailyAvg').textContent = fmt(total / daysInMonth);
-
-  const catTotals = sumByCategory(rows);
-  const topCat = Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('topCatName').textContent = topCat ? topCat[0].split(' ')[0] : '—';
+  if (viewMode === 'daily') {
+    document.getElementById('dailyChartWrap').style.display = 'block';
+    document.getElementById('totalLabel').textContent = selectedDay ? `Day ${selectedDay}` : 'Month Total';
+    const activeDays = new Set(rows.map(r=>r.date.getDate())).size || 1;
+    const monthTotal = rows.reduce((s,r)=>s+r.amount,0);
+    document.getElementById('totalMeta').innerHTML = `
+      <div class="meta-item"><div class="meta-val">${displayRows.length}</div><div class="meta-key">Txns</div></div>
+      <div class="meta-item"><div class="meta-val">${fmt(monthTotal/activeDays)}</div><div class="meta-key">Avg/Day</div></div>
+      <div class="meta-item"><div class="meta-val">${rows.length}</div><div class="meta-key">This Month</div></div>
+    `;
+    renderDailyChart(rows);
+  } else {
+    document.getElementById('dailyChartWrap').style.display = 'none';
+    if (viewMode === 'monthly') {
+      document.getElementById('totalLabel').textContent = 'Monthly Total';
+      const days = dim(viewYear,viewMonth);
+      const catTotals = sumByCat(rows);
+      const top = Object.entries(catTotals).sort((a,b)=>b[1]-a[1])[0];
+      document.getElementById('totalMeta').innerHTML = `
+        <div class="meta-item"><div class="meta-val">${rows.length}</div><div class="meta-key">Transactions</div></div>
+        <div class="meta-item"><div class="meta-val">${fmt(total/days)}</div><div class="meta-key">Daily Avg</div></div>
+        <div class="meta-item"><div class="meta-val">${top?top[0].split(' ')[0]:'—'}</div><div class="meta-key">Top Cat</div></div>
+      `;
+    } else {
+      document.getElementById('totalLabel').textContent = 'Yearly Total';
+      const monthTotals = Array.from({length:12},(_,m)=>
+        allRows.filter(r=>r.date.getFullYear()===viewYear&&r.date.getMonth()===m)
+               .reduce((s,r)=>s+r.amount,0));
+      const activeMonths = monthTotals.filter(v=>v>0).length || 1;
+      const peakIdx = monthTotals.indexOf(Math.max(...monthTotals));
+      const peakName = new Date(viewYear,peakIdx,1).toLocaleString('en',{month:'short'});
+      document.getElementById('totalMeta').innerHTML = `
+        <div class="meta-item"><div class="meta-val">${rows.length}</div><div class="meta-key">Transactions</div></div>
+        <div class="meta-item"><div class="meta-val">${fmt(total/activeMonths)}</div><div class="meta-key">Avg/Month</div></div>
+        <div class="meta-item"><div class="meta-val">${peakName}</div><div class="meta-key">Peak Month</div></div>
+      `;
+    }
+  }
 }
 
-// ── Category breakdown ────────────────────────────────────────
-function renderCategoryBreakdown(rows) {
-  const catTotals = sumByCategory(rows);
-  const total     = Object.values(catTotals).reduce((s,v)=>s+v, 0) || 1;
-  const sorted    = CATEGORIES.map(c => ({ ...c, amount: catTotals[c.key] || 0 }))
-                              .sort((a,b) => b.amount - a.amount)
-                              .filter(c => c.amount > 0);
+// ── Daily chart ────────────────────────
+function renderDailyChart(rows) {
+  const days   = dim(viewYear, viewMonth);
+  const totals = {};
+  rows.forEach(r => { const d=r.date.getDate(); totals[d]=(totals[d]||0)+r.amount; });
+  const max = Math.max(...Object.values(totals), 1);
+  const isCurrentMonth = now.getFullYear()===viewYear && now.getMonth()===viewMonth;
 
-  // Color bar
-  const bar = document.getElementById('catBar');
-  bar.innerHTML = sorted.map(c => {
-    const pct = (c.amount / total * 100).toFixed(1);
+  document.getElementById('dailyChart').innerHTML =
+    Array.from({length:days}, (_,i) => {
+      const day = i+1, val = totals[day]||0;
+      const h = val ? Math.max((val/max)*100, 4) : 2;
+      const isToday  = isCurrentMonth && day===now.getDate();
+      const isSel    = day===selectedDay;
+      const cls = isSel ? 'active' : isToday ? 'today' : '';
+      return `<div class="daily-bar-col" onclick="selectDay(${day})">
+        <div class="daily-bar-fill ${cls}" style="height:${h}%"></div>
+        <div class="daily-bar-lbl">${day%5===0||day===1?day:''}</div>
+      </div>`;
+    }).join('');
+
+  const selInfo = document.getElementById('dailySelInfo');
+  if (selectedDay !== null) {
+    const dateStr = new Date(viewYear, viewMonth, selectedDay)
+      .toLocaleDateString('en',{weekday:'short',day:'numeric',month:'short'});
+    document.getElementById('dailySelDate').textContent = dateStr;
+    document.getElementById('dailySelAmt').textContent  = fmt(totals[selectedDay]||0);
+    selInfo.style.display = 'flex';
+  } else { selInfo.style.display = 'none'; }
+}
+
+function selectDay(day) {
+  selectedDay = selectedDay===day ? null : day;
+  renderAll();
+}
+
+// ── Category breakdown ─────────────────
+function renderCategoryBreakdown(rows) {
+  const catTotals = sumByCat(rows);
+  const total     = Object.values(catTotals).reduce((s,v)=>s+v,0) || 1;
+  const sorted    = CATEGORIES.map(c=>({...c,amount:catTotals[c.key]||0}))
+                              .sort((a,b)=>b.amount-a.amount)
+                              .filter(c=>c.amount>0);
+
+  document.getElementById('catBar').innerHTML = sorted.map(c => {
+    const pct=(c.amount/total*100).toFixed(1);
     return `<div class="cat-bar-seg" style="flex:${pct};background:${c.color}" title="${c.key}: ${fmt(c.amount)}"></div>`;
   }).join('');
 
-  // List
   const list = document.getElementById('catList');
-  if (!sorted.length) { list.innerHTML = '<div class="state-box"><div class="icon">🗂️</div>No data this month</div>'; return; }
-
+  if (!sorted.length) { list.innerHTML='<div class="state-box"><div class="icon">🗂️</div>No data</div>'; return; }
   list.innerHTML = sorted.map(c => {
-    const pct = (c.amount / total * 100).toFixed(1);
-    return `
-      <div class="cat-row">
-        <div class="cat-dot" style="background:${c.color}"></div>
-        <div>
-          <div class="cat-name">${c.key}</div>
-          <div class="cat-bar-track">
-            <div class="cat-bar-fill" style="width:${pct}%;background:${c.color}"></div>
-          </div>
-        </div>
-        <div class="cat-col">
-          <div class="cat-amount">${fmt(c.amount)}</div>
-          <div class="cat-pct">${pct}%</div>
-        </div>
-      </div>`;
+    const pct=(c.amount/total*100).toFixed(1);
+    return `<div class="cat-row">
+      <div class="cat-dot" style="background:${c.color}"></div>
+      <div>
+        <div class="cat-name">${c.key}</div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%;background:${c.color}"></div></div>
+      </div>
+      <div class="cat-col">
+        <div class="cat-amount">${fmt(c.amount)}</div>
+        <div class="cat-pct">${pct}%</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ── Trends ────────────────────────────────────────────────────
-let activeTrendCat = null;
+// ── Trend section ──────────────────────
+function renderTrendSection(rows) {
+  const grid   = document.getElementById('trendGrid');
+  const detail = document.getElementById('trendDetail');
 
-function getLast6Months() {
-  const months = [];
-  for (let i = 5; i >= 0; i--) {
-    let m = viewMonth - i, y = viewYear;
-    while (m < 0) { m += 12; y--; }
-    months.push({ y, m });
-  }
-  return months;
-}
-
-function renderTrends() {
-  const months  = getLast6Months();
-  const grid    = document.getElementById('trendGrid');
-  const detail  = document.getElementById('trendDetail');
-
-  // Per-category totals for each of 6 months
-  const catData = CATEGORIES.map(cat => {
-    const vals = months.map(({y,m}) => {
-      const r = getMonthRows(y,m);
-      return sumByCategory(r)[cat.key] || 0;
-    });
-    const thisMonth = vals[vals.length-1];
-    return { ...cat, vals, thisMonth };
-  }).filter(c => c.vals.some(v=>v>0));
-
-  if (!catData.length) {
-    grid.innerHTML = '<div class="state-box"><div class="icon">📈</div>No trend data yet</div>';
+  // Yearly: show 12-month grid with drill-down
+  if (viewMode === 'yearly') {
+    document.getElementById('trendLabel').textContent = 'Monthly Breakdown';
     detail.classList.remove('open');
+    const monthTotals = Array.from({length:12},(_,m)=>
+      allRows.filter(r=>r.date.getFullYear()===viewYear&&r.date.getMonth()===m)
+             .reduce((s,r)=>s+r.amount,0));
+    const maxM = Math.max(...monthTotals,1);
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    grid.innerHTML = `<div class="year-grid">${MONTHS.map((name,m) => {
+      const amt=monthTotals[m];
+      const barW=amt?Math.max((amt/maxM)*100,4):0;
+      const isCur=viewYear===now.getFullYear()&&m===now.getMonth();
+      return `<div class="year-cell ${isCur?'current':''}" onclick="drillMonth(${m})">
+        <div class="year-cell-name">${name}</div>
+        <div class="year-cell-amt">${amt?fmtShort(amt):'—'}</div>
+        <div class="year-cell-bar" style="width:${barW}%"></div>
+      </div>`;
+    }).join('')}</div>`;
     return;
   }
 
-  grid.innerHTML = catData.map((c,i) => {
-    const max = Math.max(...c.vals) || 1;
-    const points = c.vals.map((v,j) => {
-      const x = (j / (c.vals.length-1)) * 100;
-      const y = 100 - (v / max * 90);
-      return `${x},${y}`;
-    }).join(' ');
-    const isActive = activeTrendCat === c.key;
-    return `
-      <div class="trend-tile ${isActive?'active':''}" onclick="openTrend('${c.key}')" style="${isActive?`border-color:${c.color}`:''}">
-        <div class="tile-name">${c.key.split(' ')[0]}</div>
-        <div class="tile-amount">${fmtShort(c.thisMonth)}</div>
-        <svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <polyline fill="none" stroke="${c.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${points}"/>
-        </svg>
-      </div>`;
-  }).join('');
+  // Daily: 7-day trend | Monthly: 6-month trend
+  let periods, getP, labelP;
+  if (viewMode === 'daily') {
+    document.getElementById('trendLabel').textContent = '7-Day Trend';
+    periods = Array.from({length:7},(_,i)=>{
+      const d=new Date(viewYear,viewMonth,now.getDate()-(6-i));
+      return {y:d.getFullYear(),m:d.getMonth(),d:d.getDate()};
+    });
+    getP = p => allRows.filter(r=>r.date.getFullYear()===p.y&&r.date.getMonth()===p.m&&r.date.getDate()===p.d);
+    labelP = p => new Date(p.y,p.m,p.d).toLocaleString('en',{weekday:'short'}).slice(0,2);
+  } else {
+    document.getElementById('trendLabel').textContent = '6-Month Trend';
+    periods = Array.from({length:6},(_,i)=>{
+      let m=viewMonth-(5-i), y=viewYear;
+      while(m<0){m+=12;y--;}
+      return {y,m};
+    });
+    getP = p => allRows.filter(r=>r.date.getFullYear()===p.y&&r.date.getMonth()===p.m);
+    labelP = p => new Date(p.y,p.m,1).toLocaleString('en',{month:'short'}).slice(0,3);
+  }
+
+  const catData = CATEGORIES.map(cat => {
+    const vals = periods.map(p => (sumByCat(getP(p))[cat.key]||0));
+    return {...cat, vals, current:vals[vals.length-1]};
+  }).filter(c=>c.vals.some(v=>v>0));
+
+  if (!catData.length) {
+    grid.innerHTML='<div class="state-box"><div class="icon">📈</div>No trend data yet</div>';
+    detail.classList.remove('open'); return;
+  }
+
+  grid.innerHTML = `<div class="trend-grid">${catData.map(c => {
+    const max=Math.max(...c.vals)||1;
+    const pts=c.vals.map((v,j)=>`${(j/(c.vals.length-1))*100},${100-(v/max*90)}`).join(' ');
+    const isAct=activeTrendCat===c.key;
+    return `<div class="trend-tile ${isAct?'active':''}" onclick="openTrend('${c.key}')" style="${isAct?`border-color:${c.color}`:''}">
+      <div class="tile-name">${c.key.split(' ')[0]}</div>
+      <div class="tile-amount">${fmtShort(c.current)}</div>
+      <svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <polyline fill="none" stroke="${c.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
+      </svg>
+    </div>`;
+  }).join('')}</div>`;
 
   if (activeTrendCat) {
-    const c = catData.find(c=>c.key===activeTrendCat);
-    if (c) renderTrendDetail(c, months);
-    else detail.classList.remove('open');
+    const c=catData.find(c=>c.key===activeTrendCat);
+    if (c) {
+      const max=Math.max(...c.vals)||1;
+      detail.innerHTML=`
+        <div id="trendDetailTitle" style="color:${c.color}">${c.icon} ${c.key}</div>
+        <div class="bar-chart">${c.vals.map((v,i)=>`
+          <div class="bar-col">
+            <div class="bar-fill" style="height:${(v/max*100)||3}%;background:${c.color}cc"></div>
+            <div class="bar-lbl">${labelP(periods[i])}</div>
+          </div>`).join('')}
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:var(--muted);display:flex;gap:16px">
+          <span>Max:<span style="color:var(--text);margin-left:4px">${fmt(Math.max(...c.vals))}</span></span>
+          <span>Avg:<span style="color:var(--text);margin-left:4px">${fmt(c.vals.reduce((a,b)=>a+b,0)/c.vals.length)}</span></span>
+          <span>Total:<span style="color:var(--text);margin-left:4px">${fmt(c.vals.reduce((a,b)=>a+b,0))}</span></span>
+        </div>`;
+      detail.classList.add('open');
+    } else { detail.classList.remove('open'); }
   }
 }
 
 function openTrend(key) {
-  if (activeTrendCat === key) { activeTrendCat = null; document.getElementById('trendDetail').classList.remove('open'); renderTrends(); return; }
-  activeTrendCat = key;
-  renderTrends();
+  activeTrendCat = activeTrendCat===key ? null : key;
+  if (!activeTrendCat) document.getElementById('trendDetail').classList.remove('open');
+  renderTrendSection(getViewRows());
 }
 
-function renderTrendDetail(c, months) {
-  const detail = document.getElementById('trendDetail');
-  const max    = Math.max(...c.vals) || 1;
-  detail.innerHTML = `
-    <div id="trendDetailTitle" style="color:${c.color}">${c.icon} ${c.key}</div>
-    <div class="bar-chart">
-      ${c.vals.map((v,i) => `
-        <div class="bar-col">
-          <div class="bar-fill" style="height:${(v/max*100)||3}%;background:${c.color}cc"></div>
-          <div class="bar-lbl">${monthLabel(months[i].y, months[i].m)}</div>
-        </div>`).join('')}
-    </div>
-    <div style="margin-top:10px;font-size:10px;color:var(--muted);display:flex;gap:16px">
-      <span>Max: <span style="color:var(--text)">${fmt(Math.max(...c.vals))}</span></span>
-      <span>Avg: <span style="color:var(--text)">${fmt(c.vals.reduce((a,b)=>a+b,0)/c.vals.length)}</span></span>
-      <span>Total: <span style="color:var(--text)">${fmt(c.vals.reduce((a,b)=>a+b,0))}</span></span>
-    </div>`;
-  detail.classList.add('open');
+function drillMonth(month) {
+  viewMonth=month; viewMode='monthly'; selectedDay=null; activeTrendCat=null;
+  setActiveTab('monthly'); renderAll();
 }
 
-// ── Transactions ──────────────────────────────────────────────
-function renderTransactions(rows) {
-  const list = document.getElementById('txList');
-  if (!rows.length) {
-    list.innerHTML = '<div class="state-box"><div class="icon">🧾</div>No transactions this month</div>';
-    return;
-  }
-  const sorted = [...rows].sort((a,b) => b.date - a.date).slice(0, 30);
+// ── Transactions ───────────────────────
+function renderTransactions(rows, total) {
+  document.getElementById('txLabel').textContent =
+    `${viewMode==='daily'&&selectedDay?`Day ${selectedDay}`:'Recent'} Transactions (${rows.length})`;
+  const list   = document.getElementById('txList');
+  const sorted = [...rows].sort((a,b)=>b.date-a.date).slice(0,50);
+  if (!sorted.length) { list.innerHTML='<div class="state-box"><div class="icon">🧾</div>No transactions</div>'; return; }
   list.innerHTML = sorted.map((r,i) => {
-    const cat   = CAT_MAP[r.category] || CAT_MAP['Other'];
-    const dStr  = r.date.toLocaleDateString('en', { day:'numeric', month:'short' });
-    return `
-      <div class="tx-row" style="animation-delay:${0.03*i}s">
-        <div class="tx-icon" style="background:${cat.color}22">${cat.icon}</div>
-        <div class="tx-info">
-          <div class="tx-merchant">${r.merchant}</div>
-          <div class="tx-date">${dStr}</div>
-          <div class="tx-cat-tag" style="background:${cat.color}33;color:${cat.color}">${r.category}</div>
-        </div>
-        <div class="tx-amount" style="color:${cat.color}">${fmt(r.amount)}</div>
-      </div>`;
+    const cat = CAT_MAP[r.category]||CAT_MAP['Other'];
+    const dStr = r.date.toLocaleDateString('en',{day:'numeric',month:'short'});
+    return `<div class="tx-row" style="animation-delay:${0.02*i}s">
+      <div class="tx-icon" style="background:${cat.color}22">${cat.icon}</div>
+      <div class="tx-info">
+        <div class="tx-merchant">${r.merchant}</div>
+        <div class="tx-date">${dStr}</div>
+        <div class="tx-cat-tag" style="background:${cat.color}33;color:${cat.color}">${r.category}</div>
+      </div>
+      <div class="tx-amount" style="color:${cat.color}">${fmt(r.amount)}</div>
+    </div>`;
   }).join('');
 }
 
 function renderError() {
-  ['catList','txList','trendGrid'].forEach(id => {
-    document.getElementById(id).innerHTML = '<div class="state-box"><div class="icon">⚠️</div>Could not load data.<br>Check your Sheet ID and sharing settings.</div>';
+  ['catList','txList'].forEach(id=>{
+    document.getElementById(id).innerHTML=
+      '<div class="state-box"><div class="icon">⚠️</div>Could not load data.<br>Check Sheet ID and sharing settings.</div>';
   });
 }
 
-// ── Navigation ────────────────────────────────────────────────
-document.getElementById('prevMonth').addEventListener('click', () => {
-  viewMonth--;
-  if (viewMonth < 0) { viewMonth = 11; viewYear--; }
-  activeTrendCat = null;
+// ── Tabs & navigation ──────────────────
+function setActiveTab(mode) {
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===mode));
+}
+
+document.querySelectorAll('.view-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    viewMode=tab.dataset.view; selectedDay=null; activeTrendCat=null;
+    if (viewMode==='daily'){ viewYear=now.getFullYear(); viewMonth=now.getMonth(); }
+    setActiveTab(viewMode); renderAll();
+  });
+});
+
+document.getElementById('prevBtn').addEventListener('click',()=>{
+  selectedDay=null; activeTrendCat=null;
+  if (viewMode==='yearly') { viewYear--; }
+  else { viewMonth--; if(viewMonth<0){viewMonth=11;viewYear--;} }
   renderAll();
 });
-document.getElementById('nextMonth').addEventListener('click', () => {
-  const now = new Date();
-  if (viewYear === now.getFullYear() && viewMonth === now.getMonth()) return;
-  viewMonth++;
-  if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-  activeTrendCat = null;
+
+document.getElementById('nextBtn').addEventListener('click',()=>{
+  selectedDay=null; activeTrendCat=null;
+  if (viewMode==='yearly') { if(viewYear>=now.getFullYear()) return; viewYear++; }
+  else {
+    if(viewYear===now.getFullYear()&&viewMonth===now.getMonth()) return;
+    viewMonth++; if(viewMonth>11){viewMonth=0;viewYear++;}
+  }
   renderAll();
 });
 
 document.getElementById('refreshBtn').addEventListener('click', fetchData);
 
-// ── Boot ──────────────────────────────────────────────────────
+// ── Boot ────────────────────────────────
+setActiveTab('monthly');
 fetchData();
 </script>
-
 </body>
 </html>
