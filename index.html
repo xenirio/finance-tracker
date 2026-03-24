@@ -55,14 +55,12 @@
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: 12px 16px 0;
-    padding-top: calc(env(safe-area-inset-top, 44px) + 8px);
   }
   .header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-    padding-top: calc(env(safe-area-inset-top, 44px) + 4px);
   }
   .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; }
   .logo span { color: var(--accent); }
@@ -391,7 +389,7 @@ let viewMode       = 'daily';
 const now          = new Date();
 let viewYear       = now.getFullYear();
 let viewMonth      = now.getMonth();
-let selectedDay    = now.getDate();
+let selectedDay    = now.getDate();  // default to today in daily view
 let activeTrendCat = null;
 
 // ── Helpers ────────────────────────────
@@ -712,7 +710,7 @@ function openTrend(key) {
 
 function drillMonth(month) {
   viewMonth=month; viewMode='monthly'; selectedDay=null; activeTrendCat=null;
-  setActiveTab('daily'); renderAll();
+  setActiveTab('monthly'); renderAll();
 }
 
 // ── Transactions ───────────────────────
@@ -751,25 +749,37 @@ function setActiveTab(mode) {
 
 document.querySelectorAll('.view-tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
-    viewMode=tab.dataset.view; selectedDay=null; activeTrendCat=null;
-    if (viewMode==='daily'){ viewYear=now.getFullYear(); viewMonth=now.getMonth(); }
+    viewMode=tab.dataset.view; activeTrendCat=null;
+    if (viewMode==='daily'){
+      viewYear=now.getFullYear(); viewMonth=now.getMonth();
+      selectedDay=now.getDate(); // always show today when switching to daily
+    } else {
+      selectedDay=null; // monthly/yearly show accumulated
+    }
     setActiveTab(viewMode); renderAll();
   });
 });
 
 document.getElementById('prevBtn').addEventListener('click',()=>{
-  selectedDay=null; activeTrendCat=null;
-  if (viewMode==='yearly') { viewYear--; }
-  else { viewMonth--; if(viewMonth<0){viewMonth=11;viewYear--;} }
+  activeTrendCat=null;
+  if (viewMode==='yearly') { viewYear--; selectedDay=null; }
+  else {
+    viewMonth--; if(viewMonth<0){viewMonth=11;viewYear--;}
+    selectedDay = (viewMode==='daily') ? dim(viewYear,viewMonth) : null;
+  }
   renderAll();
 });
 
 document.getElementById('nextBtn').addEventListener('click',()=>{
-  selectedDay=null; activeTrendCat=null;
-  if (viewMode==='yearly') { if(viewYear>=now.getFullYear()) return; viewYear++; }
+  activeTrendCat=null;
+  if (viewMode==='yearly') { if(viewYear>=now.getFullYear()) return; viewYear++; selectedDay=null; }
   else {
     if(viewYear===now.getFullYear()&&viewMonth===now.getMonth()) return;
     viewMonth++; if(viewMonth>11){viewMonth=0;viewYear++;}
+    // if navigated to current month in daily, default to today; else day 1
+    selectedDay = (viewMode==='daily')
+      ? (viewYear===now.getFullYear()&&viewMonth===now.getMonth() ? now.getDate() : 1)
+      : null;
   }
   renderAll();
 });
